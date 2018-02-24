@@ -5,6 +5,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+
 /**
  * 图片filter配置
  * @author xiehai1
@@ -16,9 +18,14 @@ public class ImageFilterConfig {
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setFilter(new ImageFilter());
+        registrationBean.setFilter(this.filter());
         registrationBean.addUrlPatterns("/*");
 
         return registrationBean;
+    }
+
+    @Bean
+    public Filter filter() {
+        return new ImageFilter();
     }
 }

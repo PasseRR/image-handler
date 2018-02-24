@@ -9,17 +9,13 @@ import java.util.regex.Pattern;
  * @Copyright(c) gome inc Gome Co.,LTD
  */
 public interface ImageUtils {
-    Pattern p = Pattern.compile(".+(.JPEG|.jpeg|.JPG|.jpg|.png|.PNG|.gif|.GIF|.bmp|.BMP)$");
+    Pattern p = Pattern.compile(".+(.JPEG|.JPG|.PNG|.GIF|.BMP)$");
     /**
      * 是否是图片
      * @param fileName 文件名
      * @return true/false
      */
     static boolean isImage(String fileName) {
-        return p.matcher(fileName).matches();
-    }
-
-    static void main(String[] args) {
-        System.out.println(isImage("/javaer.jpg"));
+        return p.matcher(fileName.toUpperCase()).matches();
     }
 }

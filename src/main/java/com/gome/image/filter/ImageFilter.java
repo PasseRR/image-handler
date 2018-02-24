@@ -1,8 +1,10 @@
 package com.gome.image.filter;
 
-import com.gome.image.utils.ImageUtils;
+import com.gome.image.handler.ImageHandler;
+import com.gome.image.vo.ImageVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,7 +13,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+
+import static com.gome.image.utils.FileUtils.isExists;
+import static com.gome.image.utils.ImageUtils.isImage;
 
 /**
  * 图片处理filter
@@ -21,6 +28,9 @@ import java.io.IOException;
  */
 @Slf4j
 public class ImageFilter implements Filter {
+    @Autowired
+    private ImageHandler imageHandler;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         if (log.isDebugEnabled()) {
@@ -32,12 +42,21 @@ public class ImageFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String path = request.getServletPath();
-        String query = request.getQueryString();
-        if (StringUtils.isEmpty(query) || !ImageUtils.isImage(path)) {
+        Map<String, String[]> params = request.getParameterMap();
+        // 若不是图片路径或者没有query参数
+        // 直接请求资源
+        if (!isImage(path) || CollectionUtils.isEmpty(params)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            // 图片处理
-
+            // 图片绝对路径
+            String filePath = request.getServletContext().getRealPath(path);
+            // 图片不存在 直接结束
+            if (!isExists(filePath)) {
+                // 图片处理
+                ImageVo imageVo = ImageVo.parse(params, filePath);
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                this.imageHandler.handle(imageVo, response);
+            }
         }
     }
 
@@ -46,5 +65,7 @@ public class ImageFilter implements Filter {
         if (log.isDebugEnabled()) {
             log.debug("image filter destroy!");
         }
+
+        this.imageHandler = null;
     }
 }
