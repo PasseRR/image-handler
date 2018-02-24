@@ -14,7 +14,7 @@ public interface CommonConstants {
      */
     Gson GSON = new Gson();
     /**
-     * 空字符串
+     * UTF-8编码
      */
-    String EMPTY_STRING = "";
+    String UTF_8 = "UTF-8";
 }

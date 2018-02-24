@@ -1,2 +1,7 @@
 server:
   port: 8080
+
+# 静态资源文件位置
+spring:
+  resources:
+    static-locations: D:\gome\素材\static

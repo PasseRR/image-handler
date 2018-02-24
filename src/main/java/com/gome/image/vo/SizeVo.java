@@ -14,8 +14,8 @@ import static com.gome.image.constants.ImageParamsConstants.PIXEL_SEPARATOR;
  * @Copyright(c) gome inc Gome Co.,LTD
  */
 @Builder
-@ToString
 @Getter
+@ToString
 public class SizeVo extends BaseVo {
     /**
      * 宽度(px)

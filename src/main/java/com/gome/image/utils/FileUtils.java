@@ -1,5 +1,7 @@
 package com.gome.image.utils;
 
+import com.gome.image.constants.BytesConstants;
+
 import java.io.File;
 
 /**
@@ -25,5 +27,14 @@ public interface FileUtils {
      */
     static boolean isExists(String path) {
         return new File(path).exists();
+    }
+
+    /**
+     * 文件大小是否超过100Kb
+     * @param length 字节数
+     * @return true/false
+     */
+    static boolean isMoreThan100Kb(long length) {
+        return length > BytesConstants.BYTE * 100;
     }
 }

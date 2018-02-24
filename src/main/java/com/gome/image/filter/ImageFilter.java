@@ -4,7 +4,7 @@ import com.gome.image.handler.ImageHandler;
 import com.gome.image.vo.ImageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -30,6 +30,8 @@ import static com.gome.image.utils.ImageUtils.isImage;
 public class ImageFilter implements Filter {
     @Autowired
     private ImageHandler imageHandler;
+    @Value("${spring.resources.static-locations}")
+    private String resourceLocation;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -45,17 +47,21 @@ public class ImageFilter implements Filter {
         Map<String, String[]> params = request.getParameterMap();
         // 若不是图片路径或者没有query参数
         // 直接请求资源
-        if (!isImage(path) || CollectionUtils.isEmpty(params)) {
+        if (!isImage(path)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             // 图片绝对路径
-            String filePath = request.getServletContext().getRealPath(path);
+            String filePath = this.resourceLocation + path;
             // 图片不存在 直接结束
-            if (!isExists(filePath)) {
+            if (isExists(filePath)) {
                 // 图片处理
                 ImageVo imageVo = ImageVo.parse(params, filePath);
                 HttpServletResponse response = (HttpServletResponse) servletResponse;
                 this.imageHandler.handle(imageVo, response);
+            } else {
+                if (log.isWarnEnabled()) {
+                    log.warn("file '{}' not exists!", filePath);
+                }
             }
         }
     }

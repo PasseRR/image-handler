@@ -4,6 +4,7 @@ import com.gome.image.vo.ImageVo;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 图片下载处理器
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ImageDownloadHandler implements Handler {
     @Override
-    public void handle(ImageVo imageVo, HttpServletResponse response) {
+    public void handle(ImageVo imageVo, HttpServletResponse response) throws IOException {
 
     }
 }

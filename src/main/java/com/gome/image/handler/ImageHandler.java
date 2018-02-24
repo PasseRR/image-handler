@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 图像处理器
@@ -23,7 +24,7 @@ public class ImageHandler implements Handler {
     private ImageDownloadHandler imageDownloadHandler;
 
     @Override
-    public void handle(ImageVo imageVo, HttpServletResponse response) {
+    public void handle(ImageVo imageVo, HttpServletResponse response) throws IOException {
         this.getHandler(imageVo.getImageOperationEnum())
             .handle(imageVo, response);
     }
