@@ -21,12 +21,21 @@ public interface FileUtils {
     }
 
     /**
-     * 文件是否存在
+     * 文件路径文件是否存在
      * @param path 文件路径
      * @return true/false
      */
     static boolean isExists(String path) {
-        return new File(path).exists();
+        return isExists(new File(path));
+    }
+
+    /**
+     * 给定文件是否存在
+     * @param file 文件
+     * @return true/false
+     */
+    static boolean isExists(File file) {
+        return file.exists();
     }
 
     /**
