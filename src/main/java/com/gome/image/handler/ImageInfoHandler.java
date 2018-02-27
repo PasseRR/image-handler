@@ -1,6 +1,5 @@
 package com.gome.image.handler;
 
-import com.gome.image.utils.ImageUtils;
 import com.gome.image.vo.ImageVo;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ public class ImageInfoHandler implements Handler {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setCharacterEncoding(UTF_8);
         GSON.toJson(
-            ImageUtils.getImageInfo(new File(imageVo.getPath())),
+            this.getImageInfo(new File(imageVo.getPath())),
             response.getWriter()
         );
     }

@@ -17,4 +17,16 @@ public interface CommonConstants {
      * UTF-8编码
      */
     String UTF_8 = "UTF-8";
+    /**
+     * ISO-8859-1编码
+     */
+    String ISO_8859_1 = "ISO-8859-1";
+    /**
+     * 空字符串
+     */
+    String EMPTY_STRING = "";
+    /**
+     * 感叹号
+     */
+    String EXCLAMATION_MARK = "!";
 }

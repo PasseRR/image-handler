@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
+import static com.gome.image.constants.CommonConstants.EMPTY_STRING;
+import static com.gome.image.constants.CommonConstants.EXCLAMATION_MARK;
 import static com.gome.image.constants.ImageParamsConstants.PIXEL_SEPARATOR;
 
 /**
@@ -25,6 +27,10 @@ public class SizeVo extends BaseVo {
      * 高度(px)
      */
     private Double height;
+    /**
+     * 是否保持原图片比例
+     */
+    private boolean isForce;
 
     /**
      * 通过size字符串解析出宽高 300x200
@@ -41,12 +47,15 @@ public class SizeVo extends BaseVo {
                 try {
                     // 只取数组前两个数字作为宽高
                     Double width = Double.valueOf(nums[0]);
-                    Double height = Double.valueOf(nums[1]);
+                    Double height = Double.valueOf(nums[1].replace(EXCLAMATION_MARK, EMPTY_STRING));
+                    // 是否保持原图片比例
+                    boolean isForce = nums[1].endsWith(EXCLAMATION_MARK);
                     // 只有宽高都大于0才有效
                     if (width > 0 && height > 0) {
                         sizeVo = SizeVo.builder()
                             .width(width)
                             .height(height)
+                            .isForce(isForce)
                             .build();
                     }
                 } catch (Exception e) {

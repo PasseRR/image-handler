@@ -54,9 +54,10 @@ public class ImageFilter implements Filter {
             // 图片不存在 直接结束
             if (isExists(file)) {
                 // 图片处理
-                ImageVo imageVo = ImageVo.parse(params, file.getAbsolutePath());
-                HttpServletResponse response = (HttpServletResponse) servletResponse;
-                this.imageHandler.handle(imageVo, response);
+                this.imageHandler.handle(
+                    ImageVo.parse(params, file.getAbsolutePath()),
+                    (HttpServletResponse) servletResponse
+                );
             } else {
                 if (log.isWarnEnabled()) {
                     log.warn("file '{}' not exists in static resource folder!", path);

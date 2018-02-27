@@ -1,12 +1,14 @@
 package com.gome.image.vo;
 
 import com.gome.image.eunms.ImageOperationEnum;
+import com.gome.image.utils.FileUtils;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Map;
 
+import static com.gome.image.constants.CommonConstants.EXCLAMATION_MARK;
 import static com.gome.image.constants.ImageParamsConstants.CUT;
 import static com.gome.image.constants.ImageParamsConstants.DOWNLOAD;
 import static com.gome.image.constants.ImageParamsConstants.FORMAT;
@@ -15,6 +17,7 @@ import static com.gome.image.constants.ImageParamsConstants.QUALITY;
 import static com.gome.image.constants.ImageParamsConstants.ROTATE;
 import static com.gome.image.constants.ImageParamsConstants.SIZE;
 import static com.gome.image.constants.ImageParamsConstants.ZOOM;
+import static com.gome.image.utils.FileUtils.getFilePathWithoutSuffix;
 
 /**
  * 图片请求vo
@@ -54,6 +57,11 @@ public class ImageVo extends BaseVo {
      * 图片物理路径
      */
     private String path;
+    /**
+     * 临时图片路径
+     */
+    private String thumbPath;
+    private String suffix;
     /**
      * 图片操作类型
      */
@@ -117,6 +125,59 @@ public class ImageVo extends BaseVo {
             builder.imageOperationEnum(ImageOperationEnum.INFO);
         }
 
-        return builder.build();
+        return builder.suffix(FileUtils.getFileSuffix(filePath))
+            .build();
+    }
+
+    /**
+     * 获得临时图片名称
+     * @return 图片名
+     */
+    public String getImagePath() {
+        StringBuilder sb = new StringBuilder(getFilePathWithoutSuffix(this.path));
+        if (null != this.size) {
+            sb.append("_s");
+            sb.append(this.size.getWidth());
+            sb.append("x");
+            sb.append(this.size.getHeight());
+            if (this.size.isForce()) {
+                sb.append(EXCLAMATION_MARK);
+            }
+        }
+
+        if (null != this.cut) {
+            sb.append("_c");
+            sb.append(this.cut.getWidth());
+            sb.append("x");
+            sb.append(this.cut.getHeight());
+            if (this.cut.isForce()) {
+                sb.append(EXCLAMATION_MARK);
+            }
+        }
+
+        if (null != this.quality) {
+            sb.append("_q");
+            sb.append(this.quality);
+        }
+
+        if (null != this.rotate) {
+            sb.append("_r");
+            sb.append(this.rotate);
+        }
+
+        if (null != this.zoom) {
+            sb.append("_z");
+            sb.append(this.zoom);
+        }
+
+        if (null != this.format) {
+            sb.append("_f");
+            sb.append(this.format);
+        }
+
+        sb.append(".");
+        sb.append(FileUtils.getFileSuffix(this.path));
+
+        return sb.toString();
     }
 }

@@ -1,7 +1,5 @@
 package com.gome.image.utils;
 
-import com.gome.image.eunms.BytesEnum;
-import com.gome.image.vo.ImageInfoVo;
 import com.gome.image.vo.SizeVo;
 
 import javax.imageio.ImageIO;
@@ -13,9 +11,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-import static com.gome.image.utils.FileUtils.getFileSuffix;
-import static com.gome.image.utils.FileUtils.isMoreThan100Kb;
-
 /**
  * 图片相关工具方法
  * @author xiehai1
@@ -23,14 +18,14 @@ import static com.gome.image.utils.FileUtils.isMoreThan100Kb;
  * @Copyright(c) gome inc Gome Co.,LTD
  */
 public interface ImageUtils {
-    Pattern p = Pattern.compile(".+(.JPEG|.JPG|.PNG|.GIF|.BMP)$");
+    Pattern P = Pattern.compile(".+(.JPEG|.JPG|.PNG|.GIF|.BMP)$");
     /**
      * 是否是图片
      * @param fileName 文件名
      * @return true/false
      */
     static boolean isImage(String fileName) {
-        return p.matcher(fileName.toUpperCase()).matches();
+        return P.matcher(fileName.toUpperCase()).matches();
     }
 
     /**
@@ -67,30 +62,6 @@ public interface ImageUtils {
                 .height((double) reader.getHeight(0));
         } catch (IOException e) {
             // ignore
-        }
-
-        return builder.build();
-    }
-
-    /**
-     * 获得图片信息
-     * @param file 图片文件
-     * @return ImageInfoVo
-     */
-    static ImageInfoVo getImageInfo(File file) {
-        ImageInfoVo.ImageInfoVoBuilder builder = ImageInfoVo.builder();
-        builder.name(file.getName())
-            .size(BytesEnum.getByteAsString(file.length()));
-        SizeVo sizeVo;
-        if (isMoreThan100Kb(file.length())) {
-            sizeVo = getImageWidthAndHeight(file, getFileSuffix(file.getName()));
-        } else {
-            sizeVo = getImageWidthAndHeight(file);
-        }
-
-        if (null != sizeVo.getHeight() && null != sizeVo.getWidth()) {
-            builder.width(sizeVo.getWidth() + "px")
-                .height(sizeVo.getHeight() + "px");
         }
 
         return builder.build();

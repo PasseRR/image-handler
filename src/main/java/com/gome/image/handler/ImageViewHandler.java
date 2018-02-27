@@ -16,6 +16,9 @@ import java.io.IOException;
 public class ImageViewHandler implements Handler {
     @Override
     public void handle(ImageVo imageVo, HttpServletResponse response) throws IOException {
-
+        byte[] bytes = this.toBufferedImage(imageVo);
+        response.addHeader("Content-Length", String.valueOf(bytes.length));
+        response.setContentType("image/" + imageVo.getSuffix() + "; charset=utf-8");
+        response.getOutputStream().write(bytes);
     }
 }
