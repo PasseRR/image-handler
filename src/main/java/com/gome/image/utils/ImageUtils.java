@@ -1,6 +1,8 @@
 package com.gome.image.utils;
 
 import com.gome.image.vo.SizeVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -18,6 +20,7 @@ import java.util.regex.Pattern;
  * @Copyright(c) gome inc Gome Co.,LTD
  */
 public interface ImageUtils {
+    Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);
     Pattern P = Pattern.compile(".+(.JPEG|.JPG|.PNG|.GIF|.BMP)$");
     /**
      * 是否是图片
@@ -41,6 +44,7 @@ public interface ImageUtils {
                 .height((double) bufferedImage.getHeight());
         } catch (IOException e) {
             // ignore
+            LOGGER.error(e.getMessage(), e);
         }
         return builder.build();
     }
@@ -62,6 +66,7 @@ public interface ImageUtils {
                 .height((double) reader.getHeight(0));
         } catch (IOException e) {
             // ignore
+            LOGGER.error(e.getMessage(), e);
         }
 
         return builder.build();
