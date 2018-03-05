@@ -4,6 +4,8 @@ import com.gome.image.constants.BytesConstants;
 
 import java.io.File;
 
+import static com.gome.image.constants.CommonConstants.POINT;
+
 /**
  * 文件工具方法
  * @author xiehai1
@@ -17,7 +19,7 @@ public interface FileUtils {
      * @return 文件后缀名
      */
     static String getFileSuffix(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
+        return fileName.substring(fileName.lastIndexOf(POINT) + 1);
     }
 
     /**
@@ -26,7 +28,7 @@ public interface FileUtils {
      * @return 不包括后缀的路径
      */
     static String getFilePathWithoutSuffix(String filePath) {
-        return filePath.substring(0, filePath.lastIndexOf("."));
+        return filePath.substring(0, filePath.lastIndexOf(POINT));
     }
 
     /**

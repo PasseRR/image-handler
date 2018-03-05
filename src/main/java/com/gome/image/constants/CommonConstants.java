@@ -29,4 +29,8 @@ public interface CommonConstants {
      * 感叹号
      */
     String EXCLAMATION_MARK = "!";
+    /**
+     * 点
+     */
+    String POINT = ".";
 }
